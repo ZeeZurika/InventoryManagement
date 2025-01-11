@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Entity
@@ -15,15 +16,22 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotNull(message = "Product name is required")
+    @Size(min = 2, max = 100, message = "Product name must be between 2 and 100 characters")
     private String name;
     
     @Column(nullable = false)
+    @NotNull(message = "Category is required")
     private String category;
     
     @Column(nullable = false)
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
     
     @Column(nullable = false)
+    @NotNull(message = "Quantity is required")
+    @Min(value = 0, message = "Quantity cannot be negative")
     private int quantity;
     
     @Column(nullable = false)

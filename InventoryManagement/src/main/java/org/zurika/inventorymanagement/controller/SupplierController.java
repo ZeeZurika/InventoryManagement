@@ -1,10 +1,14 @@
 package org.zurika.inventorymanagement.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
 import org.zurika.inventorymanagement.model.Supplier;
 import org.zurika.inventorymanagement.service.SupplierService;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -14,13 +18,16 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @GetMapping
-    public List<Supplier> getAllSuppliers() {
-        return supplierService.findAll();
+    public Page<Supplier> getAllSuppliers(Pageable pageable) {
+        return supplierService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
     public Optional<Supplier> getSupplierById(@PathVariable Long id) {
-        return supplierService.findById(id);
+        return Optional.of(supplierService.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException
+        ("Supplier not found with id " + id)
+        ));
     }
 
     @PostMapping
@@ -30,6 +37,10 @@ public class SupplierController {
 
     @DeleteMapping("/{id}")
     public void deleteSupplier(@PathVariable Long id) {
+        if(!supplierService.findById(id).isPresent()){
+            throw new ResourceNotFoundException(
+                "Supplier not found with id: " + id);
+        }
         supplierService.deleteById(id);
     }
 }

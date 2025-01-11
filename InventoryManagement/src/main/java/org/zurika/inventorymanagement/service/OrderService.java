@@ -3,6 +3,7 @@ package org.zurika.inventorymanagement.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zurika.inventorymanagement.model.Order;
@@ -15,8 +16,8 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public List<Order> findAll(){
-        return orderRepository.findAll();
+    public Page<Order> findAll(Pageable pageable){
+        return orderRepository.findAll(pageable);
     }
 
     public Optional<Order> findById(Long id){

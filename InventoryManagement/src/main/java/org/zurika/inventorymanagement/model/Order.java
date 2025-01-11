@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
+    @NotNull(message = "Order date is required")
     private LocalDateTime orderDate;
 
     @OneToMany(cascade = CascadeType.ALL)

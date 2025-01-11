@@ -3,6 +3,8 @@ package org.zurika.inventorymanagement.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zurika.inventorymanagement.model.Supplier;
@@ -15,8 +17,8 @@ public class SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
 
-    public List<Supplier> findAll(){
-        return supplierRepository.findAll();
+    public Page<Supplier> findAll(Pageable pageable){
+        return supplierRepository.findAll(pageable);
     }
 
     public Optional<Supplier> findById(Long id){
