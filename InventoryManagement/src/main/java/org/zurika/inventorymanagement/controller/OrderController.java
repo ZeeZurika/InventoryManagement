@@ -3,6 +3,7 @@ package org.zurika.inventorymanagement.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
 import org.zurika.inventorymanagement.model.Order;
@@ -16,8 +17,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public List<Order> getAllOrders(){
-        return orderService.findAll();
+    public Page<Order> getAllOrders(Pageable pageable){
+        return orderService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
