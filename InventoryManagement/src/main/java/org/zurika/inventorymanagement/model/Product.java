@@ -1,6 +1,5 @@
 package org.zurika.inventorymanagement.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -27,7 +26,7 @@ public class Product {
     @Column(nullable = false)
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
-    private BigDecimal price;
+    private double price;
     
     @Column(nullable = false)
     @NotNull(message = "Quantity is required")

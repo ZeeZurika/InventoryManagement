@@ -3,7 +3,9 @@ package org.zurika.inventorymanagement.controller;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
 import org.zurika.inventorymanagement.model.Product;
 import org.zurika.inventorymanagement.service.ProductService;
@@ -41,6 +43,19 @@ public class ProductController {
     @PostMapping
     public Product createProduct(@RequestBody Product product){
         return productService.save(product);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importProducts(
+        @RequestParam("file") MultipartFile file) {
+        try {
+            List<Product> products = productService.parseCsvFile(file);
+            productService.saveAll(products);
+            return ResponseEntity.ok("Products imported successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+            .body("Failed to import products: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
