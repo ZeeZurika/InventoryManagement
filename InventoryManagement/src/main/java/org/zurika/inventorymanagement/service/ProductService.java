@@ -64,4 +64,20 @@ public class ProductService {
             throw new Exception("Error parsing CSV file: " + e.getMessage(), e);
         }
     }
+
+    // Make adjustments to stock
+    public Product adjustStocks(Long productId, int adjustment, String reason) 
+    throws Exception {
+        Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new Exception("Product not found."));
+
+        int newQuantity = product.getQuantity() + adjustment;
+        if (newQuantity < 0) { // ensure quantity is not a negative value
+            throw new Exception("Stock adjustment cannot result in negative quantity");
+        }
+        product.setQuantity(newQuantity);
+        productRepository.save(product);
+
+        return product;
+    }
 }

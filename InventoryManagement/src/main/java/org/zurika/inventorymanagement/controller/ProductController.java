@@ -58,6 +58,21 @@ public class ProductController {
         }
     }
 
+    @PatchMapping("/{id}/adjust-stock")
+    public ResponseEntity<String> adjustStock(
+        @PathVariable("id") Long id,
+        @RequestParam("quantity") int quantity,
+        @RequestParam("reason") String reason
+    ){
+        try {
+            Product product = productService.adjustStocks(id, quantity, reason);
+            return ResponseEntity.ok("Stock adjusted successfully for product: " + product.getName());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+            .body("Failed to adjust stock: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id){
         if(!productService.findById(id).isPresent()){
