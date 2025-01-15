@@ -14,6 +14,13 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.PENDING; // default status
+
     @Column(nullable = false)
     @NotNull(message = "Order date is required")
     private LocalDateTime orderDate;

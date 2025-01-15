@@ -65,8 +65,8 @@ public class ProductController {
         @RequestParam("reason") String reason
     ){
         try {
-            Product product = productService.adjustStocks(id, quantity, reason);
-            return ResponseEntity.ok("Stock adjusted successfully for product: " + product.getName());
+            Product updatedProduct = productService.adjustStocks(id, quantity, reason);
+            return ResponseEntity.ok("Stock adjusted successfully for product: " + updatedProduct.getName());
         } catch (Exception e) {
             return ResponseEntity.badRequest()
             .body("Failed to adjust stock: " + e.getMessage());
