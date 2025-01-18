@@ -60,6 +60,7 @@ public class OrderController {
     // Cancel an Order
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<String> cancelOrder(@PathVariable Long id) {
+        
         try {
             orderService.cancelOrder(id);
             return ResponseEntity.ok("Order canceled successfully.");
