@@ -2,6 +2,7 @@ package org.zurika.inventorymanagement.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
+import org.zurika.inventorymanagement.model.Product;
 import org.zurika.inventorymanagement.model.Supplier;
 import org.zurika.inventorymanagement.service.SupplierService;
 import java.util.*;
@@ -40,5 +41,10 @@ public class SupplierController {
                 "Supplier not found with id: " + id);
         }
         supplierService.deleteById(id);
+    }
+
+    @GetMapping("/{id}/products")
+    public Set<Product> getProductsBySupplierId(@PathVariable Long id) {
+        return supplierService.getProductsBySupplierId(id);
     }
 }

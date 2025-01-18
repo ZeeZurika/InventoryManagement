@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zurika.inventorymanagement.model.Product;
 import org.zurika.inventorymanagement.model.Supplier;
 import org.zurika.inventorymanagement.repository.SupplierRepository;
 
@@ -31,5 +32,13 @@ public class SupplierService {
 
     public void deleteById(Long id){
         supplierRepository.deleteById(id);
+    }
+
+    public Set<Product> getProductsBySupplierId(Long supplierId){
+        Supplier supplier = supplierRepository.findById(supplierId)
+            .orElseThrow(() -> new NoSuchElementException
+            ("Supplier not found with ID: " + supplierId));
+        
+        return supplier.getProducts();
     }
 }
