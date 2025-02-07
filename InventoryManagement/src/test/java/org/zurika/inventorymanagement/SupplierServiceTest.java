@@ -2,8 +2,6 @@ package org.zurika.inventorymanagement;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import java.util.HashSet;
-import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,10 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
 import org.zurika.inventorymanagement.model.*;
-import org.zurika.inventorymanagement.model.Supplier;
-import org.zurika.inventorymanagement.repository.*;
+import org.zurika.inventorymanagement.repository.SupplierRepository;
 import org.zurika.inventorymanagement.service.SupplierService;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class SupplierServiceTest {
@@ -69,7 +69,7 @@ class SupplierServiceTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> 
                 supplierService.getProductsBySupplierId(1L));
 
-        assertEquals("Supplier not found with id 1", exception.getMessage());
+        assertEquals("Supplier not found with ID: 1", exception.getMessage());
         verify(supplierRepository).findById(1L);
     }
-} 
+}

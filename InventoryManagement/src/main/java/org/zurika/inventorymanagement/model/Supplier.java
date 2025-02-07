@@ -21,6 +21,7 @@ public class Supplier {
 
     @Column(nullable = false)
     @NotNull(message = "Contact details are required")
+    @Email(message = "Contact details must be a valid email")
     private String contactDetails;
 
     @OneToMany(mappedBy = "supplier")

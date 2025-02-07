@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,14 +38,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("admin")
-            .password(passwordEncoder().encode("admin123")).roles("ADMIN")
-            .and()
-            .withUser("user")
-            .password(passwordEncoder().encode("user123")).roles("USER");
-    }
+public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
+    auth.inMemoryAuthentication()
+        .withUser("admin")
+        .password(passwordEncoder().encode("admin123")).roles("ADMIN")
+        .and()
+        .withUser("user")
+        .password(passwordEncoder().encode("user123")).roles("USER");
+    return auth.build();
+}
 
     @Bean
     public JavaMailSender javaMailSender() {

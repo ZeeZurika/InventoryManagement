@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zurika.inventorymanagement.exception.ResourceNotFoundException;
 import org.zurika.inventorymanagement.model.Product;
 import org.zurika.inventorymanagement.model.Supplier;
 import org.zurika.inventorymanagement.repository.SupplierRepository;
@@ -27,6 +28,12 @@ public class SupplierService {
     }
 
     public Supplier save(Supplier supplier){
+        if(supplierRepository.existsByName(supplier.getName())){
+            throw new IllegalArgumentException("Supplier with name " + supplier.getName() + " already exists");
+        }
+        if(supplierRepository.existsByContactDetails(supplier.getContactDetails())){
+            throw new IllegalArgumentException("Supplier with contact details " + supplier.getContactDetails() + " already exists");
+        }
         return supplierRepository.save(supplier);
     }
 
@@ -36,7 +43,7 @@ public class SupplierService {
 
     public Set<Product> getProductsBySupplierId(Long supplierId){
         Supplier supplier = supplierRepository.findById(supplierId)
-            .orElseThrow(() -> new NoSuchElementException
+            .orElseThrow(() -> new ResourceNotFoundException
             ("Supplier not found with ID: " + supplierId));
         
         return supplier.getProducts();

@@ -29,6 +29,16 @@ public class ProductService {
     }
 
     public Product save(Product product) {
+        if(productRepository.existsByNameAndCategory(product.getName(), product.getCategory())){
+            throw new IllegalArgumentException
+                ("Product name must be unique within the same category");
+        }
+        if(product.getPrice() <= 0){
+            throw new IllegalArgumentException("Price must be greater than zero");
+        }
+        if(product.getQuantity() < 0){
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
         return productRepository.save(product);
     }
 
